@@ -24,7 +24,7 @@ new JSTable("#example2", {
 new JSTable("#example_server", {
         serverSide: true,
         deferLoading: 1000,
-        ajax: 'data.php',
+        ajax: 'https://www.haegi.org/jstable/data.php',
         ajaxParams: {
             foo: 'bar'
         }
