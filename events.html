@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JSTable</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="./css/jstable.css" />
+        <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    </head>
+    <body class="jstable">
+        <header id="masthead" class="site-header">
+            <div class="header-inner">
+                <div class="header-left">
+                    <p class="site-description"><a href="./index.html">JSTable</a></p>
+                </div>
+                <div id="mobile-header-icons">
+                    <button id="menu-toggle" class="menu-toggle" aria-controls="menu-primary" aria-expanded="false">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+                <nav id="site-navigation" class="main-navigation" role="navigation">
+                    <ul id="menu-primary" class="menu nav-menu">
+                        <li><a href="./basics.html">Basics</a></li>
+                        <li><a href="./options.html">Options</a></li>
+                        <li class="active"><a href="./events.html">Events</a></li>
+                        <li><a href="./api.html">API</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div id="content" class="site-content container">
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>Events</h2>
+                </div>
+                <div class="page-content">
+                    <div class="option-description">
+                        <h3><code>init</code></h3>
+                        <p>this event is triggered when the table is initially rendered</p>
+                    </div>
+                    <pre>
+myTable.on("init", function () {
+    console.log("init");
+});                       
+                    </pre>                    
+                    <div class="option-description">
+                        <h3><code>update</code></h3>
+                        <p>this event is triggered when the table content is updated</p>
+                    </div>
+                    <pre>
+myTable.on("update", function () {
+    console.log("update");
+});                                    
+                    </pre>                    
+                    <div class="option-description">
+                        <h3><code>getData</code></h3>
+                        <div class="options">Argument: <code>all table data rows</code>
+                        </div>
+                        <p>this event is triggered when the table data are processed</p>
+                        <pre>
+myTable.on("getData", function (dataRows) {
+    console.log(dataRows);
+});                       
+                        </pre>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>fetchData</code></h3>
+                        <div class="options">Argument: <code>the JSON object from the server</code>
+                        </div>
+                        <p>this event is triggered when data are fetched from the server</p>
+                        <pre>
+myTable.on("fetchData", function (serverData) {
+    console.log(serverData);
+});                        
+                        </pre>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>search</code></h3>
+                        <div class="options">Argument: <code>search string</code>
+                        </div>
+                        <p>this event is triggered after the table is filtered from a search</p>
+                        <pre>
+myTable.on("search", function (query) {
+    console.log(query);
+});                        
+                        </pre>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>sort</code></h3>
+                        <div class="options">Arguments: <code>sort column</code>, <code>sort direction</code>
+                        </div>
+                        <p>this event is triggered after the table is sorted</p>
+                        <pre>
+myTable.on("sort", function (column, direction) {
+    console.log(column);
+    console.log(direction);
+});                       
+                        </pre>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>paginate</code></h3>
+                        <div class="options">Arguments: <code>old page number</code>, <code>new page number</code>
+                        </div>
+                        <p>this event is triggered when a page is selected in the pager</p>
+                        <pre>
+myTable.on("paginate", function (old_page, new_page) {
+    console.log(old_page);
+    console.log(new_page);
+});                       
+                        </pre>
+                    <div class="option-description">
+                        <h3><code>perPageChange</code></h3>
+                        <div class="options">Arguments: <code>old value</code>, <code>new value</code>
+                        </div>
+                        <p>this event is triggered when the elements per page are changed</p>
+                        <pre>
+myTable.on("perPageChange", function (old_value, new_value) {
+    console.log(old_value);
+    console.log(new_value);
+});                       
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <ul>
+                    <li><a href="https://www.haegi.org/impressum/">Impressum</a></li>
+                    <li><a href="https://www.haegi.org/datenschutz/">Datenschutz</a></li>
+                </ul>
+            </div>
+        </footer>
+        
+        <script src="./js/polyfill-fetch.min.js" type="text/javascript"></script>
+        <script src="./js/jstable.es5.min.js" type="text/javascript"></script>  
+
+        <script src="./js/main.js" type="text/javascript"></script>
+        <script src="./js/table.js" type="text/javascript"></script>
+    </body>
+</html>

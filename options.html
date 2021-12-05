@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JSTable</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="./css/jstable.css" />
+        <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    </head>
+    <body class="jstable">
+        <header id="masthead" class="site-header">
+            <div class="header-inner">
+                <div class="header-left">
+                    <p class="site-description"><a href="./index.html">JSTable</a></p>
+                </div>
+                <div id="mobile-header-icons">
+                    <button id="menu-toggle" class="menu-toggle" aria-controls="menu-primary" aria-expanded="false">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+                <nav id="site-navigation" class="main-navigation" role="navigation">
+                    <ul id="menu-primary" class="menu nav-menu">
+                        <li><a href="./basics.html">Basics</a></li>
+                        <li class="active"><a href="./options.html">Options</a></li>
+                        <li><a href="./events.html">Events</a></li>
+                        <li><a href="./api.html">API</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div id="content" class="site-content container">
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>General</h2>
+                </div>
+                <div class="page-content">
+                    <div class="option-description">
+                        <h3><code>sortable</code></h3>
+                        <div class="options">Default: <code>true</code><br/>
+                            Type: <code>Boolean</code>
+                        </div>
+                        <p>enable/disable sorting of the columns</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>searchable</code></h3>
+                        <div class="options">Default: <code>true</code><br/>
+                            Type: <code>Boolean</code>
+                        </div>
+                        <p>enable/disable searching</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>Columns</h2>
+                </div>
+                <div class="page-content">
+
+                    <div class="option-description">
+                        <h3><code>columns</code></h3>
+                        <div class="options">Type: <code>Array with column objects</code>
+                        </div>
+                        <p>the <code>columns</code> option can hold multiple column objects</p>
+                    </div>
+
+                    <h3>Column object properties</h3>                    
+                    <div class="option-description">
+                        <h3><code>select</code></h3>
+                        <div class="options">Type: <code>Integer</code> or <code>Array</code>
+                        </div>
+                        <p>select one or multiple columns for the following options</p>
+                    </div>
+
+                    <div class="option-description">
+                        <h3><code>searchable</code></h3>
+                        <div class="options">Type: <code>Boolean</code>
+                        </div>
+                        <p>enable/disable searching for the columns in <code>select</code></p>
+                    </div>
+
+                    <div class="option-description">
+                        <h3><code>sortable</code></h3>
+                        <div class="options">Type: <code>Boolean</code>
+                        </div>
+                        <p>enable/disable sorting for the columns in <code>select</code></p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>sort</code></h3>
+                        <div class="options">Type: <code>asc"</code> or <code>"desc"</code>
+                        </div>
+                        <p>When the <code>sort</code> option is set, the table is initial sorted by this column with the defined sorting direction.
+                            <br/>
+                            The sorting is only applied if the <code>sortable</code> option set to <code>true</code><br/>
+                            This property can only be applied to single columns, because the table can only be sorted by one column at the time.
+                        </p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>render</code></h3>
+                        <div class="options">Type: <code>function (cell, idx)</code>
+                        </div>
+                        <p>the rendering function for the selected column(s) with the cell and the cell index as argument. <br/>
+                            The function has to return the rendering for this column(s).</p>
+                    </div>
+
+                    <h3>Example</h3>
+                    <p>In the following example the first column (0) is sortable and the table is initial sorted by this column in "asc" direction.<br/>
+                        This column is also searchable and rendered with moment.js in the date format 'DD.MM.YYYY'.
+                    </p>
+                    <p>The second (1) and third (2) columns are not sortable and not searchable. <br/>
+                        The table cells have a data-attribute "data-link" which is used to render the table with a hyperlink.</p>
+                    <pre>
+columns: [
+            {   
+                select: 0,
+                sortable: true,
+                sort: "asc",
+                searchable: true,
+                render: function (cell, idx) {
+                    let data = cell.innerHTML;
+                    return moment(data).format('DD.MM.YYYY');
+                }
+            },
+            {   
+                select: [1, 2],
+                sortable: false,
+                searchable: false,
+                render: function (cell, idx) {
+                    let data = cell.innerHTML;
+                    let link = cell.dataset.link;
+                    return '&lt;a href="' + link + '"&gt;' + data + '&lt;/a&gt;';
+                }
+            }
+]
+                    </pre>
+
+                    <h2>Data-Attributes</h2>
+                    <p>It is possible to define data-attributes on individual columns by applying them to the table header cell.</p>
+
+                    <h3>Sorting</h3>
+
+                    <div class="option-description">
+                        <h3><code>data-sortable</code></h3>
+                        <div class="options">Type: <code>Boolean</code>
+                        </div>
+                        <p>enable/disable sorting of the column</p>
+
+                        <ul>
+                            <li>a global definition of the sortable attribute of the table can be overwritten <br/>
+                                by a "data-sortable" attribute on the table header or <br/>
+                                by a custom column definitions attribute "sortable"
+                            </li>
+                            <li>a custom column definitions attribute "sortable" can be overwritten <br/>
+                                by a "data-sortable" attribute on the table header</li>
+                            <li>a "data-sortable" attribute on the table header cannot be overwritten</li>
+                        </ul>
+                    </div>
+
+                    <div class="option-description">
+                        <h3><code>data-sort</code></h3>
+                        <div class="options">Type: <code>asc"</code> or <code>"desc"</code>
+                        </div>
+                        <p>sort the table initially by this column in the defined direction</p>
+
+                        <ul>
+                            <li>a custom column definitions attribute is overwritten by a "data-sort" attribute</li>
+                            <li>since sorting is only supported for one column at the same time the last defined column is used</li>
+                        </ul>
+                    </div>
+
+                    <h3>Example</h3>
+                    <p>In the following example the table is sortable and should be initially sorted by the third column. 
+                    </p>
+                    <p>The data-attribute "data-sortable" disabled the sorting for the first column and the data-attribute "data-sort" changes the initial sorting to the second column.</p>
+                    <h4>HTML</h4>
+                    <pre>
+&lt;table id="example2"&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th data-sortable="false"&gt;Name&lt;/th&gt;
+            &lt;th data-sort="asc"&gt;Country&lt;/th&gt;
+            &lt;th&gt;Date&lt;/th&gt;
+            &lt;th&gt;Number&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Norman Small&lt;/td&gt;
+            &lt;td&gt;Tokelau&lt;/td&gt;
+            &lt;td&gt;2020-02-01 07:22:40&lt;/td&gt;
+            &lt;td&gt;8243&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+                    </pre>
+                    <h4>JavaScript</h4>
+                    <pre>
+new JSTable("#example2", {
+        sortable: true,
+        columns: [
+            {
+                select: 3,
+                sortable: true,
+                sort: "asc"
+            }
+        ]
+    }
+);
+                    </pre>
+                    <h4>Result</h4>
+                    <table id="example2">
+                        <thead>
+                            <tr>
+                                <th data-sortable="false">Name</th>
+                                <th data-sort="asc">Country</th>
+                                <th>Date</th>
+                                <th>Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rhona Carey</td>
+                                <td>Northern Mariana Islands</td>
+                                <td>2020-03-12 03:47:43</td>
+                                <td>9761</td>
+                            </tr>
+                            <tr>
+                                <td>Ria Sherman</td>
+                                <td>Denmark</td>
+                                <td>2019-07-16 18:36:14</td>
+                                <td>7472</td>
+                            </tr>
+                            <tr>
+                                <td>Hoyt Delgado</td>
+                                <td>Tajikistan</td>
+                                <td>2019-11-26 15:47:50</td>
+                                <td>7470</td>
+                            </tr>
+                            <tr>
+                                <td>Bernard Murray</td>
+                                <td>Sint Maarten</td>
+                                <td>2019-09-25 21:14:41</td>
+                                <td>2793</td>
+                            </tr>
+                            <tr>
+                                <td>Arden House</td>
+                                <td>Armenia</td>
+                                <td>2019-01-08 09:02:02</td>
+                                <td>9055</td>
+                            </tr>
+                            <tr>
+                                <td>Nina Ferrell</td>
+                                <td>Palau</td>
+                                <td>2019-09-17 08:16:39</td>
+                                <td>5120</td>
+                            </tr>
+                            <tr>
+                                <td>Glenna Shannon</td>
+                                <td>Malta</td>
+                                <td>2019-09-30 03:22:10</td>
+                                <td>5166</td>
+                            </tr>
+                            <tr>
+                                <td>Erica Grant</td>
+                                <td>Saint Kitts and Nevis</td>
+                                <td>2019-11-12 02:18:39</td>
+                                <td>1025</td>
+                            </tr>
+                            <tr>
+                                <td>Simon Cardenas</td>
+                                <td>Cayman Islands</td>
+                                <td>2019-08-25 11:31:53</td>
+                                <td>2766</td>
+                            </tr>
+                            <tr>
+                                <td>Joy Brennan</td>
+                                <td>Ireland</td>
+                                <td>2019-05-18 01:31:41</td>
+                                <td>9680</td>
+                            </tr>
+                            <tr>
+                                <td>Kennedy Arnold</td>
+                                <td>Uganda</td>
+                                <td>2019-08-18 12:37:04</td>
+                                <td>3043</td>
+                            </tr>
+                            <tr>
+                                <td>Baxter Rutledge</td>
+                                <td>Faroe Islands</td>
+                                <td>2018-08-08 19:03:44</td>
+                                <td>2476</td>
+                            </tr>
+                            <tr>
+                                <td>Willa Cook</td>
+                                <td>Micronesia</td>
+                                <td>2019-04-24 17:16:02</td>
+                                <td>1026</td>
+                            </tr>
+                            <tr>
+                                <td>Sara Fleming</td>
+                                <td>New Caledonia</td>
+                                <td>2019-09-27 06:48:17</td>
+                                <td>3981</td>
+                            </tr>
+                            <tr>
+                                <td>Whilemina Whitfield</td>
+                                <td>Sri Lanka</td>
+                                <td>2018-08-30 20:05:14</td>
+                                <td>9917</td>
+                            </tr>
+                            <tr>
+                                <td>Tiger Powell</td>
+                                <td>Laos</td>
+                                <td>2018-11-15 21:26:51</td>
+                                <td>7933</td>
+                            </tr>
+                            <tr>
+                                <td>Maya Powers</td>
+                                <td>Kenya</td>
+                                <td>2019-03-21 08:48:02</td>
+                                <td>3199</td>
+                            </tr>
+                            <tr>
+                                <td>Kermit Campbell</td>
+                                <td>Cambodia</td>
+                                <td>2019-06-29 03:47:03</td>
+                                <td>6323</td>
+                            </tr>
+                            <tr>
+                                <td>Kennedy Sears</td>
+                                <td>Thailand</td>
+                                <td>2019-01-13 05:29:01</td>
+                                <td>8502</td>
+                            </tr>
+                            <tr>
+                                <td>Aristotle Gallagher</td>
+                                <td>Sao Tome and Principe</td>
+                                <td>2019-04-14 13:28:58</td>
+                                <td>5982</td>
+                            </tr>
+                            <tr>
+                                <td>Rahim Ortega</td>
+                                <td>Haiti</td>
+                                <td>2019-05-15 02:45:11</td>
+                                <td>4386</td>
+                            </tr>
+                            <tr>
+                                <td>Abigail Conway</td>
+                                <td>Wallis and Futuna</td>
+                                <td>2018-11-28 02:09:58</td>
+                                <td>4243</td>
+                            </tr>
+                            <tr>
+                                <td>Calvin Harding</td>
+                                <td>Switzerland</td>
+                                <td>2019-01-26 02:41:56</td>
+                                <td>9560</td>
+                            </tr>
+                            <tr>
+                                <td>Nissim Owen</td>
+                                <td>South Africa</td>
+                                <td>2019-05-18 22:24:41</td>
+                                <td>2985</td>
+                            </tr>
+                            <tr>
+                                <td>Edan Oneill</td>
+                                <td>Sweden</td>
+                                <td>2018-11-25 07:18:01</td>
+                                <td>3439</td>
+                            </tr>
+                            <tr>
+                                <td>Simon Reese</td>
+                                <td>Lesotho</td>
+                                <td>2019-05-09 14:24:04</td>
+                                <td>8611</td>
+                            </tr>
+                            <tr>
+                                <td>Kylee Herrera</td>
+                                <td>Kazakhstan</td>
+                                <td>2020-03-28 06:08:52</td>
+                                <td>8434</td>
+                            </tr>
+                            <tr>
+                                <td>Melvin Stafford</td>
+                                <td>Bonaire, Sint Eustatius and Saba</td>
+                                <td>2018-09-17 10:39:37</td>
+                                <td>9539</td>
+                            </tr>
+                            <tr>
+                                <td>Regan Allen</td>
+                                <td>Greenland</td>
+                                <td>2020-01-13 15:54:15</td>
+                                <td>8614</td>
+                            </tr>
+                            <tr>
+                                <td>Castor Kelley</td>
+                                <td>Cameroon</td>
+                                <td>2019-05-19 11:11:10</td>
+                                <td>1703</td>
+                            </tr>
+                            <tr>
+                                <td>Hamilton Durham</td>
+                                <td>Bulgaria</td>
+                                <td>2019-06-22 09:46:17</td>
+                                <td>6432</td>
+                            </tr>
+                            <tr>
+                                <td>Carl Burch</td>
+                                <td>Bouvet Island</td>
+                                <td>2020-04-08 07:09:33</td>
+                                <td>4149</td>
+                            </tr>
+                            <tr>
+                                <td>Hiroko Finley</td>
+                                <td>Nigeria</td>
+                                <td>2020-02-11 07:20:14</td>
+                                <td>2620</td>
+                            </tr>
+                            <tr>
+                                <td>Fatima Miles</td>
+                                <td>Libya</td>
+                                <td>2020-06-12 19:04:07</td>
+                                <td>5222</td>
+                            </tr>
+                            <tr>
+                                <td>Sylvia Lane</td>
+                                <td>Dominican Republic</td>
+                                <td>2019-08-06 01:30:45</td>
+                                <td>1857</td>
+                            </tr>
+                            <tr>
+                                <td>Maggie Sawyer</td>
+                                <td>Åland Islands</td>
+                                <td>2019-12-01 23:56:22</td>
+                                <td>2825</td>
+                            </tr>
+                            <tr>
+                                <td>Dominique Lang</td>
+                                <td>Nigeria</td>
+                                <td>2019-07-30 00:11:31</td>
+                                <td>1829</td>
+                            </tr>
+                            <tr>
+                                <td>Wayne Shepherd</td>
+                                <td>Singapore</td>
+                                <td>2019-12-02 14:16:56</td>
+                                <td>1289</td>
+                            </tr>
+                            <tr>
+                                <td>Oren Wiley</td>
+                                <td>Northern Mariana Islands</td>
+                                <td>2020-01-21 01:23:54</td>
+                                <td>8272</td>
+                            </tr>
+                            <tr>
+                                <td>Hayden Dale</td>
+                                <td>Sierra Leone</td>
+                                <td>2019-10-18 09:36:02</td>
+                                <td>6573</td>
+                            </tr>
+                            <tr>
+                                <td>Rhona Mullen</td>
+                                <td>Côte D'Ivoire (Ivory Coast)</td>
+                                <td>2018-09-06 19:06:03</td>
+                                <td>8237</td>
+                            </tr>
+                            <tr>
+                                <td>Hector Hamilton</td>
+                                <td>Mauritania</td>
+                                <td>2018-08-30 14:08:34</td>
+                                <td>8929</td>
+                            </tr>
+                            <tr>
+                                <td>Edan Sexton</td>
+                                <td>French Southern Territories</td>
+                                <td>2020-05-25 18:01:10</td>
+                                <td>6034</td>
+                            </tr>
+                            <tr>
+                                <td>Rhea Monroe</td>
+                                <td>Syria</td>
+                                <td>2018-10-23 13:11:54</td>
+                                <td>7473</td>
+                            </tr>
+                            <tr>
+                                <td>Emerald Clay</td>
+                                <td>Martinique</td>
+                                <td>2020-02-28 19:11:24</td>
+                                <td>9108</td>
+                            </tr>
+                            <tr>
+                                <td>Griffin Dillon</td>
+                                <td>Saudi Arabia</td>
+                                <td>2018-11-07 16:43:16</td>
+                                <td>5947</td>
+                            </tr>
+                            <tr>
+                                <td>Autumn Clay</td>
+                                <td>Laos</td>
+                                <td>2020-03-14 07:57:07</td>
+                                <td>5049</td>
+                            </tr>
+                            <tr>
+                                <td>Rahim Vance</td>
+                                <td>Samoa</td>
+                                <td>2020-05-03 05:32:40</td>
+                                <td>5926</td>
+                            </tr>
+                            <tr>
+                                <td>Hammett Levine</td>
+                                <td>Martinique</td>
+                                <td>2020-01-06 00:53:12</td>
+                                <td>5589</td>
+                            </tr>
+                            <tr>
+                                <td>Yardley Fisher</td>
+                                <td>Sierra Leone</td>
+                                <td>2018-09-04 04:05:40</td>
+                                <td>3460</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>Dropdown</h2>
+                </div>
+                <div class="page-content">
+                    <div class="option-description">
+                        <h3><code>perPage</code></h3>
+                        <div class="options">Default: <code>5</code><br/>
+                            Type: <code>Integer</code>
+                        </div>
+                        <p>the maximum number of elements per page</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>perPageSelect</code></h3>
+                        <div class="options">Default: <code>[5, 10, 15, 20, 25]</code><br/>
+                            Type: <code>Array</code>
+                        </div>
+                        <p>the per page options in the dropdown as a list of integers. <code>false</code> hides the dropdown entirely.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>Pagination</h2>
+                </div>
+                <div class="page-content">
+                    <div class="option-description">
+                        <h3><code>nextPrev</code></h3>
+                        <div class="options">Default: <code>true</code><br/>
+                            Type: <code>Boolean</code>
+                        </div>
+                        <p>enable/disable the previous/next buttons</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>prevText</code></h3>
+                        <div class="options">Default: <code>"&amplsaquo;"</code><br/>
+                            Type: <code>String</code>
+                        </div>
+                        <p>content of the previous button</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>nextText</code></h3>
+                        <div class="options">Default: <code>"&amprsaquo;"</code><br/>
+                            Type: <code>String</code>
+                        </div>
+                        <p>content of the next button</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>firstLast</code></h3> 
+                        <div class="options">Default: <code>false</code><br/>
+                            Type: <code>Boolean</code>
+                        </div>
+                        <p>enable/disable the buttons to go to first and last page</p>    
+                    </div>
+                    <div class="option-description">
+                        <h3><code>firstText</code></h3>
+                        <div class="options">Default: <code>"&amplaquo;"</code><br/>
+                            Type: <code>String</code>
+                        </div>
+                        <p>content of the go to first page button</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>lastText</code></h3>
+                        <div class="options">Default: <code>"&ampraquo;"</code><br/>
+                            Type: <code>String</code>
+                        </div>
+                        <p>content of the go to last page button</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>truncatePager</code></h3>
+                        <div class="options">Default: <code>true</code><br/>
+                            Type: <code>Boolean</code>
+                        </div>
+                        <p>truncate the page links</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>pagerDelta</code></h3>
+                        <div class="options">Default: <code>2</code><br/>
+                            Type: <code>Integer</code>
+                        </div>
+                        <p>when truncating the page links show always <code>pagerDelta</code> elements before and after the current page</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>ellipsisText</code></h3>
+                        <div class="options">Default: <code>"&amphellip;"</code><br/>
+                            Type: <code>String</code>
+                        </div>
+
+                        <p>content of item which indicates the truncated links</p>
+                    </div>
+                </div>
+            </div>
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>CSS</h2>
+                </div>
+                <div class="page-content">
+                    <div class="option-description">
+                        <h3><code>classes</code></h3>
+                        <div class="options">Type: <code>object</code><br/>
+                            Default:
+                            <pre>
+classes: {
+    top: "dt-top",
+    info: "dt-info",
+    input: "dt-input",
+    table: "dt-table",
+    bottom: "dt-bottom",
+    search: "dt-search",
+    sorter: "dt-sorter",
+    wrapper: "dt-wrapper",
+    dropdown: "dt-dropdown",
+    ellipsis: "dt-ellipsis",
+    selector: "dt-selector",
+    container: "dt-container",
+    pagination: "dt-pagination",
+    loading: "dt-loading",
+    message: "dt-message"
+}
+                            </pre>
+                        </div>
+                        <p>customization of the css classes</p>
+                        <div class="table-wrapper">
+                            <table class="option-table">
+                                <thead>
+                                    <tr>
+                                        <th>Propery</th>
+                                        <th>Element</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>wrapper</code></td>
+                                        <td>div-container element which wraps everything</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>top</code></td>
+                                        <td>div-container of the <code>{top}</code> layout element</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>search</code></td>
+                                        <td>div-container of the <code>{search}</code> layout element</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>input</code></td>
+                                        <td>search input field</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>dropdown</code></td>
+                                        <td>div-container of the <code>{select}</code> layout element</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>selector</code></td>
+                                        <td>select element for choosing the elements per page</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>bottom</code></td>
+                                        <td>div-container of the <code>{bottom}</code> layout element</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>info</code></td>
+                                        <td>div-container of the <code>{info}</code> layout element</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>pagination</code></td>
+                                        <td>div-container of the <code>{pager}</code> layout element</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>ellipsis</code></td>
+                                        <td>list element which indicates a truncated pagination</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>loading</code></td>
+                                        <td>div-container of the loading screen (server side)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>container</code></td>
+                                        <td>div-container element around the table</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>table</code></td>
+                                        <td>table class</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>sorter</code></td>
+                                        <td>table header cell of sortable column</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>message</code></td>
+                                        <td>table cell which spans around the whole table to indicate no search result</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>Labels</h2>
+                </div>
+                <div class="page-content">
+                    <div class="option-description">
+                        <h3><code>labels</code></h3>
+                        <div class="options">Type: <code>object</code><br/>
+                            Default:
+                            <pre>
+labels: {
+    placeholder: "Search...",
+    perPage: "entries per page",
+    noRows: "No entries found",
+    info: "Showing {start} to {end} of {rows} entries",
+    loading: "Loading...",
+    infoFiltered: "Showing {start} to {end} of {rows} entries (filtered from {rowsTotal} entries)"
+}
+                            </pre>
+                        </div>
+                        <p>customization of display text messages</p>
+                        <div class="table-wrapper">
+                            <table class="option-table">
+                                <thead>
+                                    <tr>
+                                        <th>Propery</th>
+                                        <th>Element</th>
+                                        <th>Variables</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>placeholder</code></td>
+                                        <td>placeholder of the search input field</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>perPage</code></td>
+                                        <td>label of the elements per page selection</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>noRows</code></td>
+                                        <td>message text when no elements where found after doing a search</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>info</code></td>
+                                        <td>text for the <code>{info}</code> layout element</td>
+                                        <td>
+                                            <code>{start}</code>: the first element on this page<br/>
+                                            <code>{end}</code>: the last element on this page<br/>
+                                            <code>{page}</code>: the current page number<br/>
+                                            <code>{pages}</code>: the total page number<br/>
+                                            <code>{rows}</code>: the total number of found elements (eventually filtered)<br/>
+                                            <code>{rowsTotal}</code>: the total number of elements<br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>loading</code></td>
+                                        <td>loading text</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>infoFiltered</code></td>
+                                        <td>text for the <code>{info}</code> layout element when the table is filtered</td>
+                                        <td>see <code>info</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>Layout</h2>
+                </div>
+                <div class="page-content">
+                    <div class="option-description">
+                        <h3><code>layout</code></h3>
+                        <div class="options">Type: <code>object</code><br/>
+                            Default:
+                            <pre>
+layout: {
+    top: "{select}{search}",
+    bottom: "{info}{pager}"
+}
+                            </pre>
+                        </div>
+                        <p>customization of the elements in the top and bottom containers</p>
+
+                        <div class="table-wrapper">
+                            <table class="option-table">
+                                <thead>
+                                    <tr>
+                                        <th>Variable</th>
+                                        <th>Element</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>{select}</code></td>
+                                        <td>the element per page selection dropdown</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>{search}</code></td>
+                                        <td>the search field</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>{info}</code></td>
+                                        <td>the info message</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>{pager}</code></td>
+                                        <td>the pagination</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <h3>Notices</h3>
+                    <ul>
+                        <li>It is not advised to use the <code>{search}</code> and <code>{select}</code> elements more than once, since they are not synchronized 
+                            and work independent</li>
+                        <li>The <code>{info}</code> and <code>{pager}</code> elements can only be used once.</li>
+                        <li>When using only one element this element is always display on the left. <br/>It is not possible to display a single element on the right aligned.</li>
+                        <li>The element <code>{select}</code> depends on the value of <code>perPageSelect</code>. When the <code>perPageSelect</code> option is <code>false</code> the container is not displayed.</li>
+                        <li>The element <code>{search}</code> depends on the value of <code>searchable</code>. When the <code>searchable</code> option is <code>false</code> the container is not displayed.</li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>Server Side Options</h2>
+                </div>
+                <div class="page-content">
+
+                    <p>For large datasets it is possible to do the sorting, searching and pagination on the server. </p>
+                    <p>The first table page needs to be available in plain HTML. <br/>
+                        For the various actions the server is contacted and the table is replaced with the returning data from the server.</p>
+
+                    <div class="option-description">
+                        <h3><code>serverSide</code></h3>
+                        <div class="options">Default: <code>false</code><br/>
+                            Type: <code>Boolean</code>
+                        </div>
+                        <p>should the table data be retrieved from the server?</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>deferLoading</code></h3>
+                        <div class="options">Default: <code>null</code><br/>
+                            Type: <code>Integer</code>
+                        </div>
+                        <p>total data count</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>ajax</code></h3>
+                        <div class="options">Default: <code>null</code><br/>
+                            Type: <code>String</code>
+                        </div>
+                        <p>the URL for retrieving the data</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>ajaxParams</code></h3>
+                        <div class="options">Default: <code>{}</code><br/>
+                            Type: <code>object</code>
+                        </div>
+                        <p>additional parameters for the server</p>
+                    </div>
+
+                    <h3>Default Query Parameters</h3>
+                    <div class="table-wrapper">
+                        <table class="option-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>searchQuery</code></td>
+                                    <td>the search text</td>
+                                </tr>
+                                <tr>
+                                    <td><code>sortColumn</code></td>
+                                    <td>the index of the to sorted column</td>
+                                </tr>
+                                <tr>
+                                    <td><code>sortDirection</code></td>
+                                    <td>the sorting direction (<code>asc</code> or <code>desc</code>)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>start</code></td>
+                                    <td>the data offset</td>
+                                </tr>
+                                <tr>
+                                    <td><code>length</code></td>
+                                    <td>the length of the returning data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <h3>Server Response</h3>
+
+                    <div class="table-wrapper">
+                        <table class="option-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>recordsTotal</code></td>
+                                    <td>total data count</td>
+                                </tr>
+                                <tr>
+                                    <td><code>recordsFiltered</code></td>
+                                    <td>filtered data count</td>
+                                </tr>
+                                <tr>
+                                    <td><code>data</code></td>
+                                    <td>the table data which should be displayed as a two dimensional JSON array</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <h3>Example</h3>
+                    <table id="example_server">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Country</th>
+                                <th>Date</th>
+                                <th>Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rhona Carey</td>
+                                <td>Northern Mariana Islands</td>
+                                <td>2020-03-12 03:47:43</td>
+                                <td>9761</td>
+                            </tr>
+                            <tr>
+                                <td>Ria Sherman</td>
+                                <td>Denmark</td>
+                                <td>2019-07-16 18:36:14</td>
+                                <td>7472</td>
+                            </tr>
+                            <tr>
+                                <td>Hoyt Delgado</td>
+                                <td>Tajikistan</td>
+                                <td>2019-11-26 15:47:50</td>
+                                <td>7470</td>
+                            </tr>
+                            <tr>
+                                <td>Bernard Murray</td>
+                                <td>Sint Maarten</td>
+                                <td>2019-09-25 21:14:41</td>
+                                <td>2793</td>
+                            </tr>
+                            <tr>
+                                <td>Arden House</td>
+                                <td>Armenia</td>
+                                <td>2019-01-08 09:02:02</td>
+                                <td>9055</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>Query Parameters</h2>
+                </div>
+                <div class="page-content">
+                    <p>It is possible to append URL query parameters when searching or navigating with the current selected value. <br/> 
+                        Additionally these parameters are parsed and applied when loading the current page.</p>
+                    <div class="option-description">
+                        <h3><code>addQueryParams</code></h3>
+                        <div class="options">Default: <code>true</code><br/>
+                            Type: <code>Boolean</code>
+                        </div>
+                        <p>enable/disable query parameter appending to URL</p>
+                    </div>
+                    <div class="option-description">
+                        <h3><code>queryParams</code></h3>
+                        <div class="options">Type: <code>object</code><br/>
+                            Default:
+                            <pre>
+queryParams: {
+    page: 'page',
+    search: 'search'
+}
+                            </pre>
+                        </div>
+                        <p>the name of the query parameters to append/parse</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <ul>
+                    <li><a href="https://www.haegi.org/impressum/">Impressum</a></li>
+                    <li><a href="https://www.haegi.org/datenschutz/">Datenschutz</a></li>
+                </ul>
+            </div>
+        </footer>
+
+        <script src="./js/polyfill-fetch.min.js" type="text/javascript"></script>
+        <script src="./js/jstable.es5.min.js" type="text/javascript"></script>  
+
+        <script src="./js/main.js" type="text/javascript"></script>
+        <script src="./js/table.js" type="text/javascript"></script>
+    </body>
+</html>
