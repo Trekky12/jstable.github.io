@@ -953,11 +953,76 @@ layout: {
                                 </tr>
                                 <tr>
                                     <td><code>data</code></td>
-                                    <td>the table data which should be displayed as a two dimensional JSON array</td>
+                                    <td>The table data which should be displayed as a two dimensional JSON array. <br/>
+                                        Each element in the array needs to be either an Array with the cell data as values, <br/>
+                                        an Object with the key "data", which is an Array with the cell data as values, 
+                                        and the key "attributes", which is an Object with key, values for the attributes of these row <br>
+                                        or a list of Objects with the key "data", for the cell values and the key "attributes" for the row attributes.
+                                    </td>                                        
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+
+                    <h4>Example Responses</h4>
+                    <pre>
+{
+    "recordsTotal": 2,
+    "recordsFiltered":2,
+    "data": [
+                [
+                    "First Row First Column",
+                    "First Row Second Column"
+                ],
+                [
+                    "Second Row First Column",
+                    "Second Row Second Column"
+                ]
+            ]
+}
+                    </pre>
+                    <pre>
+{
+    "recordsTotal": 2,
+    "recordsFiltered":2,
+    "data": [
+                [
+                    {"data":"First Row First Column", "attributes":{"data-customvalue":"test"}},
+                    {"data":"First Row Second Column", "attributes":{}}
+                ],
+                [
+                    {"data":"Second Row First Column", "attributes":{"data-customvalue2":"test2"}},
+                    {"data":"Second Row Second Column"}
+                ]
+            ]
+}
+                    </pre>
+                    <pre>
+{
+    "recordsTotal": 2,
+    "recordsFiltered":2,
+    "data": [
+                {
+                    "data": [
+                                "First Row First Column",
+                                "First Row Second Column"
+                    ],
+                    "attributes": {
+                        "data-customvalue": "test"
+                    }
+                },
+                {
+                    "data": [
+                                {"data":"Second Row First Column", "attributes":{"data-customvalue2":"test2"}},
+                                {"data":"Second Row Second Column"}
+                    ],
+                    "attributes": {
+                        "data-customvalue2": "test2"
+                    }
+                }
+            ]
+}
+                    </pre>
 
 
                     <h3>Example</h3>
@@ -1034,6 +1099,28 @@ queryParams: {
                         </div>
                         <p>the name of the query parameters to append/parse</p>
                     </div>
+                </div>
+            </div>
+
+            <div class="inner-content">
+                <div class="page-header">
+                    <h2>Rows</h2>
+                </div>
+                <div class="page-content">
+                    <p>It is possible to add row attributes based on the cells. Therefore a callback for the <code>rowAttributesCreator</code>can be defined.</p>
+                    <div class="option-description">
+                        <h3><code>rowAttributesCreator</code></h3>
+                        <div class="options">
+                            Type: <code>function</code><br/>
+                            Argument: <code>the rows cells as Array of JTableCell Objects</code><br/>
+                            Returns: <code>A list of Objects with attributes</code>
+                        </div>
+                    </div>
+                    <pre>
+rowAttributesCreator: function(cells){
+    return {"data-customvalue1": "value1", "data-customvalue2": "value2"};
+}
+                    </pre>
                 </div>
             </div>
         </div>
